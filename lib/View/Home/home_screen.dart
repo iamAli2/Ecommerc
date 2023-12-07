@@ -7,6 +7,9 @@ import 'package:get/get.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import '../../Controllers/home_page_cotroller.dart';
+import '../../Utils/Widgets/customWidget.dart';
+import '../../Utils/Widgets/general_warning_exception.dart';
+import '../../Utils/Widgets/internetExceptionWidget.dart';
 import '../../Utils/utils.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -22,6 +25,12 @@ class _HomeScreenState extends State<HomeScreen> {
   var controller = Get.put(HomePageController());
 
   @override
+  void initState() {
+    controller.userListApi();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
@@ -30,6 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
         width: context.screenWidth,
         child: ListView(
           shrinkWrap: true,
+          physics: const BouncingScrollPhysics(),
           children: [
             const SizedBox(
               height: 5.0,
@@ -47,16 +57,97 @@ class _HomeScreenState extends State<HomeScreen> {
             swipperWidget(),
 
             //grid view
-            gridViewWidget()
+            gridViewWidget(),
+
+            //text
+            Align(
+              alignment: Alignment.centerLeft,
+              child: 'Store'
+                  .text
+                  .color(kDarkBlue)
+                  .xl2
+                  .fontFamily('Poppins')
+                  .make()
+                  .pOnly(left: 10.0),
+            ),
+
+            //strore
+            stores()
           ],
         ),
       )),
     );
   }
 
+  Widget stores() {
+    return Obx(() {
+      switch (controller.rxRequestStatus.value) {
+        case Status.LOADING:
+          return const Center(
+              child: CupertinoActivityIndicator(
+            color: kgreenTextColor,
+          ));
+        case Status.ERROR:
+          if (controller.error.value == 'No internet') {
+            return InterNetExceptionWidget(
+              onPress: () {
+                controller.refreshApi();
+              },
+            );
+          } else {
+            return GeneralExceptionWidget(
+              onPress: () {
+              controller.refreshApi();
+            });
+          }
+        case Status.COMPLETED:
+          return SizedBox(
+            height: 170.0,
+            child: ListView(
+              clipBehavior: Clip.antiAlias,
+              physics: const BouncingScrollPhysics(),
+              scrollDirection: Axis.horizontal,
+              children: List.generate(controller.userList.length, (int index) {
+                var list = controller.userList[index];
+                return GestureDetector(
+                  onTap: () {
+                    flushBarMessage(
+                        'Bying not Supported yet', context, kgreenTextColor);
+                  },
+                  child: Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 8.0),
+                      decoration: const BoxDecoration(
+                          shape: BoxShape.circle, color: Colors.transparent),
+                      width: 80.0,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Image.network(list.image.toString()),
+                          5.heightBox,
+                          Align(
+                            alignment: Alignment.center,
+                            child: list.category
+                                .toString()
+                                .toUpperCase()
+                                .text
+                                .size(10)
+                                .overflow(TextOverflow.clip)
+                                .make(),
+                          )
+                        ],
+                      )),
+                );
+              }),
+            ),
+          );
+      }
+    });
+  }
+
   Widget gridViewWidget() {
     return SizedBox(
-      height: MediaQuery.of(context).size.height - 100,
+      height: MediaQuery.of(context).size.height - 380,
       child: MasonryGridView.builder(
         padding: const EdgeInsets.fromLTRB(8.0, 25.0, 8.0, 8.0),
         mainAxisSpacing: 8.0, // spacing between rows
@@ -100,92 +191,6 @@ class _HomeScreenState extends State<HomeScreen> {
               ).p(10.0));
         },
       ),
-    );
-  }
-
-  Widget stores() {
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: Row(
-        children: [
-          
-        ],
-      ),
-    );
-  }
-
-  Widget swipperWidget() {
-    return VxSwiper.builder(
-      aspectRatio: 16 / 9,
-      autoPlay: true,
-      height: 150,
-      enlargeCenterPage: true,
-      itemCount: 3,
-      itemBuilder: (context, index) {
-        return Container(
-          clipBehavior: Clip.antiAlias,
-          margin: const EdgeInsets.symmetric(horizontal: 5),
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15.0),
-              color: klightredColor,
-              image: const DecorationImage(
-                  image: AssetImage('assets/images/swiperBackground.png'),
-                  fit: BoxFit.cover)),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Container(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Expanded(
-                        child: Column(
-                      children: [
-                        RichText(
-                            textAlign: TextAlign.start,
-                            text: TextSpan(children: [
-                              '20% OFF\n'
-                                  .textSpan
-                                  .color(korangeColor)
-                                  .bold
-                                  .size(20)
-                                  .fontFamily('Poppins')
-                                  .make(),
-                              'on any fast food item'
-                                  .textSpan
-                                  .color(kDarkBlue)
-                                  .make()
-                            ])),
-                        const SizedBox(
-                          height: 5.0,
-                        ),
-                        //order button
-                        customOrderButton(
-                          () {},
-                        ).pOnly(right: 15.0),
-                      ],
-                    )),
-
-                    //date text
-                    const Text(
-                      'Valid until Mar 23',
-                      textDirection: TextDirection.rtl,
-                      textAlign: TextAlign.end,
-                      style: TextStyle(
-                          fontFamily: 'Poppins',
-                          color: kgreyColor,
-                          fontSize: 12),
-                    )
-                  ],
-                ).pOnly(top: 20.0),
-              ),
-
-              //image conatiner
-              Image.asset('assets/images/Pizza.png')
-            ],
-          ).pOnly(left: 5.0, bottom: 3.0),
-        );
-      },
     );
   }
 
@@ -241,35 +246,4 @@ class _HomeScreenState extends State<HomeScreen> {
       ],
     );
   }
-}
-
-Widget serchButton() {
-  return Container(
-    decoration: BoxDecoration(
-      color: Colors.white,
-      borderRadius: BorderRadius.circular(18),
-    ),
-    height: 50,
-    child: TextFormField(
-      cursorColor: kgreyColor,
-      textAlign: TextAlign.start,
-      decoration: InputDecoration(
-          hintText: 'Seach for shops & restaurants',
-          hintStyle: const TextStyle(
-              color: kgreyColor,
-              fontFamily: 'Heading',
-              fontSize: 15,
-              fontWeight: FontWeight.normal),
-          prefixIcon: const Icon(
-            CupertinoIcons.search,
-            color: kgreyColor,
-          ),
-          focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(18),
-              borderSide: const BorderSide(color: kOutLineColor, width: 2.0)),
-          enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(18),
-              borderSide: const BorderSide(color: kOutLineColor, width: 2.0))),
-    ),
-  );
 }

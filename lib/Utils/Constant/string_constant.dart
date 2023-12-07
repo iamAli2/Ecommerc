@@ -16,3 +16,7 @@ var feturesListdesc = [
   'Reliable parcel deliveryto your doorstep,hassle-free!',
   'Get More, Pay Less'
 ];
+
+//fake api url
+const appUrlforCategroy = 'https://fakestoreapi.com/products/categories';
+const appUrlForProduct = 'https://fakestoreapi.com/products';
