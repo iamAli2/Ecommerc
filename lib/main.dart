@@ -1,4 +1,4 @@
-import 'package:ecommerce_app/View/home_page.dart';
+import 'package:ecommerce_app/View/Home/home.dart';
 import 'package:ecommerce_app/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(useMaterial3: false),
-      home: const HomePage(),
+      home: const Home(),
     );
   }
 }

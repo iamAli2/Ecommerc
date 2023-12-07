@@ -1,29 +1,41 @@
 import 'package:ecommerce_app/Controllers/home_page_cotroller.dart';
 import 'package:ecommerce_app/Utils/Constant/colors.dart';
+import 'package:ecommerce_app/View/Chats/chats_screen.dart';
+import 'package:ecommerce_app/View/Home/home_screen.dart';
+import 'package:ecommerce_app/View/Order/order_screen.dart';
+import 'package:ecommerce_app/View/Profile/profile_screen.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:velocity_x/velocity_x.dart';
 
-import '../Utils/utils.dart';
+import '../../Utils/utils.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class Home extends StatefulWidget {
+  const Home({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<Home> createState() => _HomeState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomeState extends State<Home> {
   var controller = Get.put(HomePageController());
 
-  var navBarItems = [];
+  var navBody = [
+    HomeScreen(),
+    const OrderSreen(),
+    const SizedBox.shrink(),
+    const ChatScreen(),
+    const ProfileScreen()
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(),
         body: Column(
           children: [
-            ElevatedButton(onPressed: () {}, child: const Text('data'))
+            Obx(() =>
+                Expanded(child: navBody.elementAt(controller.pageIndex.value)))
           ],
         ),
         bottomNavigationBar: bottomNavigationBar());

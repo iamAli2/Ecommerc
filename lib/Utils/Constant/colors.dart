@@ -7,6 +7,10 @@ const kLightGreyColor = Color(0xFFF1F1FC);
 const klightBlue = Color(0xFF4D65C0);
 const korangeColor = Color(0xFFE95F36);
 const kgreenTextColor = Color(0xFF2CA66F);
+const kOutLineColor = Color(0xFFEEEEF4);
+const klightredColor = Color(0xFFFFF2F2);
+
+
 
 //grediants
 const kprimaryColor =
