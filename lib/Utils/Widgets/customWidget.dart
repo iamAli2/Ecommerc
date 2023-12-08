@@ -73,7 +73,11 @@ Widget swipperWidget() {
             ),
 
             //image conatiner
-            Image.asset('assets/images/Pizza.png')
+            Image.asset(
+              'assets/images/Pizza.png',
+              fit: BoxFit.cover,
+              height: 125,
+            )
           ],
         ).pOnly(left: 5.0, bottom: 3.0),
       );

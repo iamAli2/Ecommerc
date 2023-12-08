@@ -46,6 +46,54 @@ Widget customOrderButton(VoidCallback onTap) {
   );
 }
 
+Widget customProfileButton(
+  VoidCallback onTap,
+  double height,
+  double width,
+  String text,
+) {
+  return GestureDetector(
+    onTap: onTap,
+    child: Container(
+      height: height,
+      width: width,
+      clipBehavior: Clip.antiAlias,
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10), gradient: kprimaryColor),
+      child: Center(
+        child: Text(
+          text,
+          style: const TextStyle(
+              fontSize: 20, fontFamily: 'Poppins', color: Colors.white),
+        ).p(5),
+      ),
+    ),
+  );
+}
+
+Widget customSignUpButton(VoidCallback onTap, double height, double width,
+    String text, FocusNode? node, TextEditingController? controller) {
+  return GestureDetector(
+    onTap: onTap,
+    child: Card(
+      child: Container(
+        height: height,
+        width: width,
+        clipBehavior: Clip.antiAlias,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10), gradient: kprimaryColor),
+        child: Center(
+          child: Text(
+            text,
+            style: const TextStyle(
+                fontSize: 16, fontFamily: 'Poppins', color: Colors.white),
+          ).p(5),
+        ),
+      ),
+    ),
+  );
+}
+
 enum Status { LOADING, COMPLETED, ERROR }
 
 void flushBarMessage(String message, BuildContext context, Color color) {
