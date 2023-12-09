@@ -95,8 +95,7 @@ class _HomeScreenState extends State<HomeScreen> {
               },
             );
           } else {
-            return GeneralExceptionWidget(
-              onPress: () {
+            return GeneralExceptionWidget(onPress: () {
               controller.refreshApi();
             });
           }
@@ -147,7 +146,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget gridViewWidget() {
     return SizedBox(
-      height: MediaQuery.of(context).size.height - 380,
+      height: MediaQuery.of(context).size.height - 300,
       child: MasonryGridView.builder(
         padding: const EdgeInsets.fromLTRB(8.0, 25.0, 8.0, 8.0),
         mainAxisSpacing: 8.0, // spacing between rows
@@ -222,6 +221,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     onPressed: () => customDialog(),
                     child: 'Change Location'
                         .text
+                        .size(10)
                         .color(korangeColor)
                         .fontFamily('Heading')
                         .makeCentered())
