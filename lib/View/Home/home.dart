@@ -4,12 +4,9 @@ import 'package:ecommerce_app/View/Chats/chats_screen.dart';
 import 'package:ecommerce_app/View/Home/home_screen.dart';
 import 'package:ecommerce_app/View/Order/order_screen.dart';
 import 'package:ecommerce_app/View/Profile/profile_screen.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:velocity_x/velocity_x.dart';
 
-import '../../Utils/utils.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
