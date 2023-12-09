@@ -51,7 +51,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   //     .px(10.0),
                   // 10.heightBox,
                   customProfileButton(() {
-                    Get.to(() => const SignUp());
+                    Get.to(()=>const SignUp(),
+      duration: const Duration(milliseconds: 200), transition: Transition.fade);
                   }, 50, 190, 'Sign Up'),
                 ],
               ),

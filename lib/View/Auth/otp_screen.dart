@@ -127,7 +127,11 @@ class _Otp_verifyState extends State<Otp_verify> {
                 height: 20,
               ),
               customSignUpButton(() => verifyOTP(), 50, double.infinity,
-                      'Verify Phone Number', phoneFocusNode, otpController)
+                      Text(
+            'Verify Phone Number',
+            style: const TextStyle(
+                fontSize: 16, fontFamily: 'Poppins', color: Colors.white),
+          ), phoneFocusNode, otpController)
                   .px(10.0),
               Row(
                 children: [

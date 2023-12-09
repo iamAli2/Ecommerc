@@ -1,5 +1,6 @@
 import 'package:ecommerce_app/Controllers/home_page_cotroller.dart';
 import 'package:ecommerce_app/Utils/Constant/colors.dart';
+import 'package:ecommerce_app/Utils/utils.dart';
 import 'package:ecommerce_app/View/Chats/chats_screen.dart';
 import 'package:ecommerce_app/View/Home/home_screen.dart';
 import 'package:ecommerce_app/View/Order/order_screen.dart';
@@ -101,7 +102,8 @@ class _HomeState extends State<Home> {
                 30, // Adjust this value to position the button vertically
             child: GestureDetector(
               onTap: () {
-                // Handle button tap
+                flushBarMessage(
+                        'Bying not Supported yet', context, kgreenTextColor);
               },
               child: Container(
                   height: 60,

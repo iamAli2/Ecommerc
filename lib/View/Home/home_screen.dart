@@ -159,35 +159,41 @@ class _HomeScreenState extends State<HomeScreen> {
         itemBuilder: (context, index) {
           assert(index >= 0 && index < feturesList.length);
 
-          return Container(
-              decoration: BoxDecoration(
-                  color: kLightGreyColor,
-                  borderRadius: BorderRadius.circular(12)),
-              child: Column(
-                children: [
-                  //Text
-                  Align(
-                    alignment: Alignment.topLeft,
-                    child: Text(
-                      feturesList[index],
-                      style: const TextStyle(
-                          fontSize: 18.0,
-                          color: kDarkBlue,
-                          fontFamily: 'Poppins'),
+          return GestureDetector(
+            onTap: () {
+              flushBarMessage(
+                        'Bying not Supported yet', context, kgreenTextColor);
+            },
+            child: Container(
+                decoration: BoxDecoration(
+                    color: kLightGreyColor,
+                    borderRadius: BorderRadius.circular(12)),
+                child: Column(
+                  children: [
+                    //Text
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: Text(
+                        feturesList[index],
+                        style: const TextStyle(
+                            fontSize: 18.0,
+                            color: kDarkBlue,
+                            fontFamily: 'Poppins'),
+                      ),
                     ),
-                  ),
-                  Text(
-                    feturesListdesc[index],
-                    overflow: TextOverflow.clip,
-                    style: const TextStyle(
-                        fontSize: 13, fontFamily: 'Poppins', color: kgreyColor),
-                  ),
-                  5.heightBox,
-                  Align(
-                      alignment: Alignment.bottomRight,
-                      child: Image.asset(featuresImageList[index]))
-                ],
-              ).p(10.0));
+                    Text(
+                      feturesListdesc[index],
+                      overflow: TextOverflow.clip,
+                      style: const TextStyle(
+                          fontSize: 13, fontFamily: 'Poppins', color: kgreyColor),
+                    ),
+                    5.heightBox,
+                    Align(
+                        alignment: Alignment.bottomRight,
+                        child: Image.asset(featuresImageList[index]))
+                  ],
+                ).p(10.0)),
+          );
         },
       ),
     );

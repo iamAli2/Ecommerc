@@ -2,9 +2,11 @@ import 'package:ecommerce_app/Data/Repositories/store_repo.dart';
 import 'package:ecommerce_app/Utils/Constant/colors.dart';
 import 'package:ecommerce_app/View/Auth/otp_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:velocity_x/velocity_x.dart';
+import '../../Controllers/sign_up_controller.dart';
 import '../../Utils/utils.dart';
 
 class SignUp extends StatefulWidget {
@@ -19,7 +21,7 @@ class _SignUpState extends State<SignUp> {
   final repo = HomeRepository();
   TextEditingController phoneController = TextEditingController();
   TextEditingController countryController = TextEditingController();
-
+  final signUpController = Get.put(SignUpController());
   FocusNode phoneFocusNode = FocusNode();
 
   @override
@@ -41,17 +43,21 @@ class _SignUpState extends State<SignUp> {
 
   void sendOTP() async {
     String phone = "${countryController.text}${phoneController.text.trim()}";
-
+    signUpController.isLoading.value = true;
     await FirebaseAuth.instance.verifyPhoneNumber(
         phoneNumber: phone,
         codeSent: (verificationId, resendToken) {
-          Get.to(() => Otp_verify(
+          signUpController.isLoading.value = false;
+          Get.to(()=>Otp_verify(
                 verificationId: verificationId,
-              ));
+              ),
+      duration: const Duration(milliseconds: 200), transition: Transition.fade);
         },
-        verificationCompleted: (credential) {},
+        verificationCompleted: (credential) {
+          signUpController.isLoading.value = false;
+        },
         verificationFailed: (ex) {
-          print(ex);
+          flushBarMessage(ex.toString(), context, Colors.red);
         },
         codeAutoRetrievalTimeout: (verificationId) {},
         timeout: const Duration(seconds: 30));
@@ -119,11 +125,29 @@ class _SignUpState extends State<SignUp> {
             child: phoneTextField().px(10.0),
           ),
           20.heightBox,
-          customSignUpButton(() {
-            FocusScope.of(context).unfocus();
-            sendOTP();
-          }, 50, double.infinity, 'Continue', phoneFocusNode, phoneController)
-              .px(10.0),
+          Obx(
+            () => customSignUpButton(() {
+              FocusScope.of(context).unfocus();
+              sendOTP();
+            },
+                    50,
+                    double.infinity,
+                    signUpController.isLoading.value
+                        ? const CupertinoActivityIndicator(
+                            radius: 15,
+                            color: Colors.white,
+                          )
+                        : const Text(
+                            'Continue',
+                            style: TextStyle(
+                                fontSize: 16,
+                                fontFamily: 'Poppins',
+                                color: Colors.white),
+                          ),
+                    phoneFocusNode,
+                    phoneController)
+                .px(10.0),
+          ),
         ],
       ),
     );
@@ -154,7 +178,7 @@ class _SignUpState extends State<SignUp> {
           ),
           const Text(
             "|",
-            style: TextStyle(fontSize: 23, color: Colors.grey),
+            style: TextStyle(fontSize: 18, color: Colors.grey),
           ),
           const SizedBox(
             width: 10,
